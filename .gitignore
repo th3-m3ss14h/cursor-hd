@@ -1,0 +1,25 @@
+# Python-generated files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Python environments and test/cache output
+.venv/
+venv/
+env/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# Local Real-ESRGAN weights (large binary checkpoints)
+weights/*.pth
+weights/*.pt
+weights/*.ckpt
+weights/*.safetensors
+
+# Editor / OS files
+.DS_Store
+.idea/
+.vscode/

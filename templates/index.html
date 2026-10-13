@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>cursor-hd | GNOME 51 cursor upgrader</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<div class="app">
+  <header class="topbar">
+    <div class="brand">cursor<span class="accent">-hd</span></div>
+    <div class="topbar-copy">
+      <strong>Installed cursor themes</strong>
+      <span>Inspect, select, and upgrade in one operation</span>
+    </div>
+    <div class="topbar-meta" id="scan-meta" role="status">Scanning installed themes…</div>
+    <button class="btn ghost" id="rescan-btn">Rescan</button>
+  </header>
+
+  <section class="scan-progress-panel" id="scan-progress-panel" aria-live="polite">
+    <div class="scan-progress-copy">
+      <span id="scan-progress-message">Preparing scan…</span>
+      <span id="scan-progress-count">Starting</span>
+    </div>
+    <div class="scan-progress-track" id="scan-progress-track" role="progressbar" aria-label="Cursor theme scan progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+      <div id="scan-progress-bar"></div>
+    </div>
+  </section>
+
+  <div class="layout">
+    <aside class="theme-list" aria-label="Installed cursor themes">
+      <div class="list-tools">
+        <input id="theme-filter" type="search" placeholder="Filter themes by name or path…" autocomplete="off" aria-label="Filter themes">
+        <div class="list-tool-row">
+          <button class="text-btn" id="select-visible-btn">Select visible</button>
+          <button class="text-btn" id="clear-selection-btn">Clear selection</button>
+        </div>
+      </div>
+      <div class="list-heading">
+        <span>Theme</span>
+        <span>Native max</span>
+      </div>
+      <div id="theme-rows" class="theme-rows">
+        <div class="loading-state">Scanning…</div>
+      </div>
+      <div class="selection-toolbar" id="selection-toolbar">
+        <div>
+          <strong id="sel-count">0 selected</strong>
+          <span class="selection-hint">All cursor shapes will be processed.</span>
+        </div>
+        <button class="btn primary" id="upgrade-selected-btn" disabled>Upgrade selected <span aria-hidden="true">→</span></button>
+      </div>
+    </aside>
+
+    <main class="detail" id="detail" aria-live="polite">
+      <div class="empty-state">
+        <div class="empty-mark">↗</div>
+        <h1>Select a cursor theme</h1>
+        <p>Choose a theme in the list to inspect its cursor sizes, animation, aliases, and GNOME 51 scalable-cursor status. Check one or more themes to upgrade them together.</p>
+      </div>
+    </main>
+  </div>
+
+  <footer class="jobpanel hidden" id="jobpanel">
+    <div class="jobpanel-head">
+      <div>
+        <strong id="job-title">Upgrading themes…</strong>
+        <span id="job-subtitle"></span>
+      </div>
+      <button class="btn ghost small" id="job-close">Dismiss</button>
+    </div>
+    <div class="progress-track"><div id="job-progress"></div></div>
+    <div class="joblog" id="joblog" role="log" aria-live="polite"></div>
+  </footer>
+</div>
+
+<div class="modal-overlay hidden" id="confirm-modal" role="dialog" aria-modal="true" aria-labelledby="confirm-title">
+  <div class="modal">
+    <div class="modal-kicker">One batch · no duplicate copies</div>
+    <h2 id="confirm-title">Upgrade selected themes</h2>
+    <div class="modal-body" id="confirm-body"></div>
+    <div class="modal-actions">
+      <button class="btn ghost" id="confirm-cancel-btn">Cancel</button>
+      <button class="btn primary" id="confirm-start-btn">Upgrade themes</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay hidden" id="fallback-modal" role="dialog" aria-modal="true" aria-labelledby="fallback-title">
+  <div class="modal fallback-modal">
+    <div class="modal-kicker">Real-ESRGAN failure</div>
+    <h2 id="fallback-title">Switch this batch to CPU?</h2>
+    <div class="modal-body">
+      <p id="fallback-theme" class="fallback-summary"></p>
+      <div class="fallback-warning"><strong>Real-ESRGAN failed and the affected theme was rolled back.</strong><p id="fallback-error"></p></div>
+      <p>Choose <strong>Use CPU</strong> to resume the same batch with Lanczos. The operation will not rescan the installed themes. Choose <strong>Cancel</strong> to stop here.</p>
+    </div>
+    <div class="modal-actions">
+      <button class="btn ghost" id="fallback-cancel-btn">Cancel</button>
+      <button class="btn primary" id="fallback-cpu-btn">Use CPU</button>
+    </div>
+  </div>
+</div>
+
+<script src="{{ url_for('static', filename='app.js') }}"></script>
+</body>
+</html>
